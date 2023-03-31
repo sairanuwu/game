@@ -1,7 +1,11 @@
 import pygame
 from game import Game
 from player import Player
+
+
 pygame.init()
+
+clock = pygame.time.Clock()
 
 #Fênetre du jeu
 pygame.display.set_caption("Comet fall game")
@@ -11,13 +15,14 @@ screen = pygame.display.set_mode((1080, 720))
 background = pygame.image.load('assets/bg.jpg')
 
 #Chargement du joueur
-player = Player()
+player = Player(Game)
 
 #Chargement du jeu
 game = Game()
 
 running = True
 
+clock = pygame.time.Clock()
 #Boucle tant que la condition est vraie
 while running:
 
@@ -27,12 +32,23 @@ while running:
     #appliquer l'image de mon joueur
     screen.blit(game.player.image, game.player.rect)
 
+    #actualise la barre de vie du joueur
+    game.player.update_health_bar(screen)
+
     #récuperer les projectiles du joueur
     for projectile in game.player.all_projectiles:
         projectile.move()
 
+    #récuperer les monstres du jeu
+    for monster in game.all_monsters:
+        monster.forward()
+        monster.update_health_bar(screen)
+
     #appliquer l'ensemble des images de mon groupe de projectiles
     game.player.all_projectiles.draw(screen)
+
+    #appliquer l'ensemble des images de mon groupe de monstre
+    game.all_monsters.draw(screen)
 
     #verifie si le joueur veut aller à gauche ou à droite
     if game.pressed.get(pygame.K_RIGHT) and game.player.rect.x + game.player.rect.width < screen.get_width():
@@ -42,6 +58,12 @@ while running:
 
     #mettre à jour l'écran
     pygame.display.flip()
+
+     # Mettre à jour l'écran
+    pygame.display.flip()
+
+    # Contrôler le nombre de FPS
+    clock.tick(60)
 
     #si le joueur ferme la fênetre
     for event in pygame.event.get():
