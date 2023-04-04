@@ -44,7 +44,8 @@ class Player(animation.AnimateSprite):
         self.all_projectiles.add(Projectile(self))
         #démarre l'animation du lancer
         self.start_animation()
-    
+        #joue le son du projectile
+        self.game.sound_manager.play('tir')
     def move_right(self):
         #déplacement se fait uniquement si il n'y a pas de collision avec un monstre
         if not self.game.check_collision(self, self.game.all_monsters):

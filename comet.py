@@ -17,14 +17,14 @@ class Comet(pygame.sprite.Sprite):
 
     def remove(self):
         self.comet_event.all_comets.remove(self)
+        #joue le son de la comète
+        self.comet_event.game.sound_manager.play('meteorite')
 
         #verifie si la comete est terminé
         if len(self.comet_event.all_comets) == 0:
             print("évenement terminé")
             self.comet_event.reset_percent()
-            self.comet_event.game.spawn_monster()
-            self.comet_event.game.spawn_monster()
-    
+            self.comet_event.game.start()
     def fall(self):
         self.rect.y += self.velocity
 
